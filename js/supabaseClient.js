@@ -3,8 +3,8 @@
 // Fill these in with the values from your Supabase project:
 // Project Settings → API → Project URL, and Project API keys → "anon public"
 // ============================================================================
-const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const SUPABASE_URL = "https://rrzwyozmasgvzpgxajfe.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyend5b3ptYXNndnpwZ3hhamZlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5Mzk5ODYsImV4cCI6MjA5OTUxNTk4Nn0.f1m4Ly8l44H1gI1hqB5RBcPGwQfRz4ZTtfux78P5seQ";
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
