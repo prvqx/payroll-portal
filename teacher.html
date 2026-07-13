@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Teacher Dashboard — Payroll Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </div>
+      Payroll Portal
+    </div>
+    <div class="topbar-right">Teacher View</div>
+  </div>
+
+  <div class="content">
+    <div class="page-head">
+      <h1 id="welcomeHeading">Welcome!</h1>
+      <span class="sub">Here's what's happening with your Extra Hours requests.</span>
+    </div>
+
+    <div id="notifArea"></div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="stroke:#0d363b"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          My Requests
+        </h2>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <div class="tabs" id="statusTabs">
+            <button class="tab active" data-status="all">All</button>
+            <button class="tab" data-status="pending">Pending</button>
+            <button class="tab" data-status="approved">Approved</button>
+            <button class="tab" data-status="declined">Declined</button>
+          </div>
+          <div class="fab-wrap">
+            <button class="fab" id="openSubmitModal">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+            <span class="tip">Submit Extra Hours</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Date Logged</th>
+              <th>School</th>
+              <th>Work Category</th>
+              <th>Hours Worked</th>
+              <th>Description</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="requestsBody">
+            <tr class="empty-row"><td colspan="6">Loading your requests…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-footer">
+        <span class="count" id="totalRequestsCount">0 total requests</span>
+        <span class="count" id="hoursApprovedBiweekly">0 hrs approved (last 14 days)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="logout-fixed">
+  <button class="btn btn-ghost" id="logoutBtn">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+    Log Out
+  </button>
+</div>
+
+<!-- Submit Extra Hours Modal -->
+<div class="modal-overlay" id="submitModalOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Submit Extra Hours</h3>
+      <button class="modal-close" id="closeSubmitModal">✕</button>
+    </div>
+    <div class="error-text" id="submitError"></div>
+    <form id="submitForm">
+      <div class="field">
+        <label for="reqSchool">School</label>
+        <input type="text" id="reqSchool" required placeholder="e.g. Lincoln Elementary" list="schoolList">
+        <datalist id="schoolList"></datalist>
+      </div>
+      <div class="field">
+        <label for="reqCategory">Work Category</label>
+        <select id="reqCategory" required>
+          <option value="Subbing">Subbing</option>
+          <option value="Performance">Performance</option>
+          <option value="Professional Development">Professional Development</option>
+          <option value="Curriculum Development">Curriculum Development</option>
+          <option value="Custom">Custom…</option>
+        </select>
+      </div>
+      <div class="field custom-cat-field" id="customCategoryField">
+        <label for="reqCustomCategory">Describe the category</label>
+        <input type="text" id="reqCustomCategory" placeholder="Type your own category">
+      </div>
+      <div class="field">
+        <label for="reqHours">Hours Worked</label>
+        <input type="number" id="reqHours" min="0.25" step="0.25" required placeholder="e.g. 2.5">
+      </div>
+      <div class="field">
+        <label for="reqDescription">Description</label>
+        <textarea id="reqDescription" required placeholder="What did this work involve?"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-glow" id="submitReqBtn" style="width:100%;">
+        <span class="btn-label">Submit Request</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="successModalOverlay">
+  <div class="modal">
+    <div class="success-wrap">
+      <svg class="check-circle" viewBox="0 0 52 52">
+        <circle cx="26" cy="26" r="23" />
+        <path d="M15 27l7 7 16-16" />
+      </svg>
+      <h3>Request Submitted</h3>
+      <p style="margin-top:8px; color:var(--ink-soft); font-weight:600;">Pending Review by your Regional Manager</p>
+      <button class="btn btn-primary" id="closeSuccessModal" style="width:100%; margin-top:24px;">
+        <span class="btn-label">Done</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/teacher.js"></script>
+</body>
+</html>

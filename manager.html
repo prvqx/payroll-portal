@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manager Dashboard — Payroll Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-shell">
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </div>
+      Payroll Portal
+    </div>
+    <div class="topbar-right">
+      <button class="btn btn-mint-soft btn-sm" id="exportCsvBtn">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M12 15V3M7 10l5 5 5-5"/><path d="M20 21H4"/></svg>
+        Export CSV
+      </button>
+      Regional Manager View
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="page-head">
+      <h1 id="welcomeHeading">Welcome!</h1>
+      <span class="sub">Here's the latest on Extra Hours requests across your schools.</span>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-icon sun"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <div><div class="stat-value" id="statPending">0</div><div class="stat-label">Pending</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon mint"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <div><div class="stat-value" id="statApprovedToday">0</div><div class="stat-label">Approved Today</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon peach"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg></div>
+        <div><div class="stat-value" id="statDeclinedToday">0</div><div class="stat-label">Declined Today</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon lavender"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+        <div><div class="stat-value" id="statApprovedBiweekly">0</div><div class="stat-label">Approved (14 Days)</div></div>
+      </div>
+    </div>
+
+    <!-- Pending -->
+    <div class="section">
+      <div class="section-head">
+        <h2>Pending Requests</h2>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th class="sortable" data-table="pending">
+                <span class="th-inner">
+                  <span class="sort-dd" id="sortDdWrapPending">
+                    <span id="sortTriggerPending" style="cursor:pointer;">Teacher ▾</span>
+                    <div class="sort-dd-menu" id="sortMenuPending">
+                      <button data-sort="teacher">Sort by Teacher Name</button>
+                      <button data-sort="hours">Sort by Hours (Most–Least)</button>
+                      <button data-sort="school">Sort by School</button>
+                      <button data-sort="cancel" class="cancel">Cancel Sorting</button>
+                    </div>
+                  </span>
+                </span>
+              </th>
+              <th>Date</th>
+              <th>School</th>
+              <th>Hours</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="pendingBody">
+            <tr class="empty-row"><td colspan="6">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-footer">
+        <span class="count" id="pendingCount">0 requests</span>
+      </div>
+    </div>
+
+    <!-- Approved -->
+    <div class="section">
+      <div class="section-head">
+        <h2>Approved Requests</h2>
+        <button class="btn btn-ghost btn-sm" id="clearApprovedBtn">Clear Table</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th class="sortable">
+                <span class="th-inner">
+                  <span class="sort-dd" id="sortDdWrapApproved">
+                    <span id="sortTriggerApproved" style="cursor:pointer;">Teacher ▾</span>
+                    <div class="sort-dd-menu" id="sortMenuApproved">
+                      <button data-sort="teacher">Sort by Teacher Name</button>
+                      <button data-sort="hours">Sort by Hours (Most–Least)</button>
+                      <button data-sort="school">Sort by School</button>
+                      <button data-sort="cancel" class="cancel">Cancel Sorting</button>
+                    </div>
+                  </span>
+                </span>
+              </th>
+              <th>Date</th>
+              <th>School</th>
+              <th>Hours</th>
+              <th>Note</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="approvedBody">
+            <tr class="empty-row"><td colspan="6">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-footer">
+        <span class="count" id="approvedCount">0 requests</span>
+      </div>
+    </div>
+
+    <!-- Declined -->
+    <div class="section">
+      <div class="section-head">
+        <h2>Declined Requests</h2>
+        <button class="btn btn-ghost btn-sm" id="clearDeclinedBtn">Clear Table</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th class="sortable">
+                <span class="th-inner">
+                  <span class="sort-dd" id="sortDdWrapDeclined">
+                    <span id="sortTriggerDeclined" style="cursor:pointer;">Teacher ▾</span>
+                    <div class="sort-dd-menu" id="sortMenuDeclined">
+                      <button data-sort="teacher">Sort by Teacher Name</button>
+                      <button data-sort="hours">Sort by Hours (Most–Least)</button>
+                      <button data-sort="school">Sort by School</button>
+                      <button data-sort="cancel" class="cancel">Cancel Sorting</button>
+                    </div>
+                  </span>
+                </span>
+              </th>
+              <th>Date</th>
+              <th>School</th>
+              <th>Hours</th>
+              <th>Reason</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="declinedBody">
+            <tr class="empty-row"><td colspan="6">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-footer">
+        <span class="count" id="declinedCount">0 requests</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="logout-fixed">
+  <button class="btn btn-ghost" id="logoutBtn">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+    Log Out
+  </button>
+</div>
+
+<!-- Review Modal -->
+<div class="modal-overlay" id="reviewModalOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Review Request</h3>
+      <button class="modal-close" id="closeReviewModal">✕</button>
+    </div>
+    <div id="reviewDetails"></div>
+    <div class="modal-actions">
+      <button class="btn btn-danger-soft" id="reviewRejectBtn">Reject</button>
+      <button class="btn btn-mint-soft" id="reviewApproveBtn">Approve</button>
+    </div>
+  </div>
+</div>
+
+<!-- Approve Note Modal -->
+<div class="modal-overlay" id="approveModalOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Approve Request</h3>
+      <button class="modal-close" id="closeApproveModal">✕</button>
+    </div>
+    <div class="field">
+      <label for="approveNote">Add a note for the teacher? (optional)</label>
+      <textarea id="approveNote" placeholder="e.g. Thanks for covering this!"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="skipApproveNote">Skip</button>
+      <button class="btn btn-mint-soft" id="confirmApprove">Approve Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- Reject Reason Modal -->
+<div class="modal-overlay" id="rejectModalOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Decline Request</h3>
+      <button class="modal-close" id="closeRejectModal">✕</button>
+    </div>
+    <div class="error-text" id="rejectError"></div>
+    <div class="field">
+      <label for="rejectReason">Reason for declining (required)</label>
+      <textarea id="rejectReason" placeholder="Let the teacher know why"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="cancelReject">Cancel</button>
+      <button class="btn btn-danger-soft" id="confirmReject">Decline Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Clear Modal -->
+<div class="modal-overlay" id="clearModalOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Clear this table?</h3>
+      <button class="modal-close" id="closeClearModal">✕</button>
+    </div>
+    <p style="color:var(--ink-soft); font-weight:600; line-height:1.5;">
+      This removes these requests from view. They'll still be included in any CSV export. This can't be undone from the dashboard.
+    </p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="cancelClear">Cancel</button>
+      <button class="btn btn-danger-soft" id="confirmClear">Clear Table</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabaseClient.js"></script>
+<script src="js/manager.js"></script>
+</body>
+</html>
